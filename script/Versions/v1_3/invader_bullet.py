@@ -30,11 +30,10 @@ class InvaderBullet(pygame.sprite.Sprite):
         self.speed_y = 2
 
     def update(self):
-        ################################################################
-        # Move the bullet down the screen. If the bullet goes below the
-        # bottom edge, remove it to avoid unnecessary processing.
-        ################################################################
-        
+        """
+        Move the bullet down the screen. If the bullet goes below the
+        bottom edge, remove it to avoid unnecessary processing.
+        """
         self.rect.y += self.speed_y
 
         # Remove the bullet once it leaves the screen

@@ -1,20 +1,20 @@
 # file name: barrier.py
-#################################################################################
-#This file contains the code for the barriers that protect the player.
-#Each barrier is made up of many small blocks. When a bullet hits a block,
-#only that piece is removed, which makes the barriers slowly crumble as
-#the game continues.
-#################################################################################
+#############################################################################
+# This file contains the code for the barriers that protect the player.
+# Each barrier is made up of many small blocks. When a bullet hits a block,
+# only that piece is removed, which makes the barriers slowly crumble as
+# the game continues.
+#############################################################################
 
 import pygame
 from settings import GREEN, SCREEN_HEIGHT
 
 
 class BarrierBlock(pygame.sprite.Sprite):
-    ##################################################################
+    ############################################################
     # A single small square block used to build the barriers.
     # When a block is hit by any bullet, it is removed from the game.
-    ##################################################################
+    ############################################################
 
     def __init__(self, x, y, size=6):
         super().__init__()
@@ -27,13 +27,11 @@ class BarrierBlock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))
 
 
-# ###############################################################
-# This pattern uses simple text rows to shape the barrier.
-# Each "#" represents one block, and spaces mean empty gaps.
-# Using a text pattern makes it easy to design a barrier that
-# looks similar to the classic Space Invaders style.
-##################################################################
-
+# ---------------------------------------------------------------------
+# A simple arch-shaped barrier made from ASCII characters.
+# A "#" means "place a block here", and a space means empty air.
+# This gives the barriers a more classic Space Invaders look.
+# ---------------------------------------------------------------------
 ARCH_SHAPE = [
     "     ######",
     "   #########",
@@ -44,10 +42,11 @@ ARCH_SHAPE = [
 
 
 def create_barrier(barrier_group, all_sprites, start_x, start_y, block_size=6):
-    """
-    Build a single barrier using the ARCH_SHAPE pattern above.
-    Each "#" is replaced with a BarrierBlock at the correct position.
-    """
+    ##########################################################################
+    # Build a single barrier using the ARCH_SHAPE pattern above.
+    # Each "#" is replaced with a BarrierBlock at the correct position.
+    ##########################################################################
+
     for row_index, row in enumerate(ARCH_SHAPE):
         for col_index, char in enumerate(row):
             if char == "#":
@@ -60,10 +59,10 @@ def create_barrier(barrier_group, all_sprites, start_x, start_y, block_size=6):
 
 
 def create_barriers(barrier_group, all_sprites):
-    ###############################################################
+    #################################################################
     # Place several barriers across the lower part of the screen.
-    # The spacing can be adjusted to spread them out evenly.
-    ###############################################################
+    #The spacing can be adjusted to spread them out evenly.
+    ################################################################
 
     base_y = SCREEN_HEIGHT - 150   # Height where all barriers sit
     spacing = 160                  # Distance between each barrier

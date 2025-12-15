@@ -1,9 +1,9 @@
 # player.py
-############################################################################
+##########################################################################
 # This file contains the Player class, which represents the defender at the
 # bottom of the screen. The player can move left and right and fire bullets
 # upwards. The player also keeps track of their remaining lives.
-############################################################################
+##########################################################################
 
 import pygame
 from settings import IMG_DIR, SCREEN_WIDTH, PLAYER_SPEED
@@ -30,11 +30,10 @@ class Player(pygame.sprite.Sprite):
         self.lives = 3
 
     def update(self, keys):
-        ########################################################################
+        #####################################################################
         # Move the player left or right depending on which arrow keys are held.
         # The player cannot move off the screen.
-        ########################################################################
-
+        #####################################################################
         if keys[pygame.K_LEFT]:
             self.rect.x -= PLAYER_SPEED
 
@@ -49,12 +48,11 @@ class Player(pygame.sprite.Sprite):
             self.rect.right = SCREEN_WIDTH
 
     def shoot(self, bullet_group, all_sprites):
-        ####################################################################
+        #####################################################################
         # Fire a bullet upwards from the centre of the player.
         # The new bullet is added to the relevant sprite groups so it can be
         # drawn and updated by the main game loop.
-        ####################################################################
-        
+        #####################################################################
         bullet = Bullet(self.rect.centerx, self.rect.top)
         bullet_group.add(bullet)
         all_sprites.add(bullet)

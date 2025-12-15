@@ -1,25 +1,25 @@
-"""
-COM4008 – Programming Concepts
-Coursework 1 – Space Invaders (All 3 Requirements Completed)
-
-This script implements:
-1. Invader Array (3 sprite types, movement left/right, dropping down, speeding up)
-2. Player Shooting (multiple bullets, collisions, lives)
-3. Barriers (crumble when hit)
-
-Folder Structure:
-space_invaders/
-  images/
-    objects/
-      defender.png
-      invader1.png
-      invader2.png
-      invader3.png
-  script/
-    main.py
-
-Author: Terry Catchpole
-"""
+################################################################
+# COM4008 – Programming Concepts
+# Coursework 1 – Space Invaders (All 3 Requirements Completed)
+#
+# This main.py script implements:
+# 1. Invader Array (3 sprite types, movement left/right, dropping down, speeding up)
+# 2. Player Shooting (multiple bullets, collisions, lives)
+# 3. Barriers (crumble when hit)
+#
+# Folder Structure:
+# space_invaders/
+#  images/
+#    objects/
+#      defender.png
+#      invader1.png
+#      invader2.png
+#      invader3.png
+#  script/
+#    main.py
+#
+# Author: Terry Catchpole
+########################################################################################
 
 import pygame
 import random
@@ -28,20 +28,20 @@ from pathlib import Path
 
 pygame.init()
 
-# ---------------------------- SCREEN -------------------------------------
+####################################### Screen Size ###################################
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("COM4008 Space Invaders – Terry (CW1)")
+pygame.display.set_caption("COM4008 Space Invaders - Terry (CW1)")
 
 clock = pygame.time.Clock()
 FPS = 60
 
-# ----------------------------- PATHS --------------------------------------
+############################### PATHS #######################################
 BASE_DIR = Path(__file__).resolve().parent              # .../script
 IMG_DIR = BASE_DIR.parent / "images" / "objects"        # .../images/objects
 
-# ----------------------------- CONSTANTS ----------------------------------
+############################### CONSTANTS ##################################
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -87,9 +87,9 @@ class Player(pygame.sprite.Sprite):
         all_sprites.add(bullet)
 
 
-# ======================================================================
+#======================================================================
 #  BULLET CLASS
-# ======================================================================
+#======================================================================
 class Bullet(pygame.sprite.Sprite):
     """A bullet fired by the player."""
     def __init__(self, x, y, speed_y):
@@ -106,9 +106,9 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-# ======================================================================
+#======================================================================
 #  INVADER CLASS
-# ======================================================================
+#======================================================================
 class Invader(pygame.sprite.Sprite):
     """Single invader inside the array."""
     def __init__(self, x, y, img_path):

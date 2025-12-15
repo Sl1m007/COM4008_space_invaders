@@ -1,20 +1,20 @@
 # file name: invader_bullet.py
-"""
-This file contains the InvaderBullet class, which represents the bullets
-fired by the invaders. These bullets travel downwards and disappear once
-they move off the bottom of the screen.
-"""
+#########################################################################
+# This file contains the InvaderBullet class, which represents the bullets
+# fired by the invaders. These bullets travel downwards and disappear once
+# they move off the bottom of the screen.
+##########################################################################
 
 import pygame
 from settings import WHITE
 
 
 class InvaderBullet(pygame.sprite.Sprite):
-    """
-    A bullet fired by an invader. It is drawn as a small white rectangle
-    and moves down the screen until it either hits something or leaves
-    the visible play area.
-    """
+    ######################################################################
+    # A bullet fired by an invader. It is drawn as a small white rectangle
+    # and moves down the screen until it either hits something or leaves
+    # the visible play area.
+    ######################################################################
 
     def __init__(self, x, y):
         super().__init__()
@@ -30,11 +30,10 @@ class InvaderBullet(pygame.sprite.Sprite):
         self.speed_y = 2
 
     def update(self):
-        ################################################################
+        #################################################################
         # Move the bullet down the screen. If the bullet goes below the
         # bottom edge, remove it to avoid unnecessary processing.
-        ################################################################
-        
+        #################################################################
         self.rect.y += self.speed_y
 
         # Remove the bullet once it leaves the screen

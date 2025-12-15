@@ -1,12 +1,10 @@
 # settings.py
 from pathlib import Path
 
-
-# Base directory = location of this settings.py file
-BASE_DIR = Path(__file__).resolve().parent
-
-# Path to the images folder (relative to project structure)
-IMG_DIR = BASE_DIR.parent / "images" / "objects"
+# ---- ABSOLUTE PATH TO YOUR IMAGES ----
+IMG_DIR = Path(
+    r"C:\Users\Admin\OneDrive - Buckinghamshire New University\COM4008_Program_CW1\space_invaders\images\objects"
+)
 
 # Screen size
 SCREEN_WIDTH = 800

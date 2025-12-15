@@ -1,14 +1,26 @@
 # main.py
-"""
-COM4008 – Programming Concepts
-Coursework 1 – Space Invaders
-
-This script glues together:
-- Player (player.py)
-- Bullet (bullet.py)
-- Invaders (invader.py)
-- Barriers (barrier.py)
-"""
+################################################################
+# COM4008 – Programming Concepts
+# Coursework 1 – Space Invaders (All 3 Requirements Completed)
+#
+# This main.py script implements:
+# 1. Invader Array (3 sprite types, movement left/right, dropping down, speeding up)
+# 2. Player Shooting (multiple bullets, collisions, lives)
+# 3. Barriers (crumble when hit)
+#
+# Folder Structure:
+# space_invaders/
+#  images/
+#    objects/
+#      defender.png
+#      invader1.png
+#      invader2.png
+#      invader3.png
+#  script/
+#    main.py
+#
+# Author: Terry Catchpole
+########################################################################################
 
 import pygame
 import sys
@@ -52,7 +64,7 @@ invader_speed = INVADER_SPEED_START
 game_over = False
 score = 0
 
-# ---------------- GAME LOOP ----------------
+################## GAME LOOP ####################
 running = True
 while running:
     clock.tick(FPS)
