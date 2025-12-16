@@ -82,11 +82,3 @@ I tested the game by playing it and trying different actions, including:
 	•	Letting invader bullets hit the player to test lives
 	•	Allowing invaders to reach the bottom to check the game-over condition
 
-⸻
-
-USE OF RESOURCES
-
-I mainly followed the COM4008 PyGame lecture material, especially for the game loop, sprites, and collision handling.
-
-I also used ChatGPT as a learning tool to help understand how to organise the project into separate files and to troubleshoot errors while learning.
-All final code was written by me, and I made sure I understood how each part of the program works.
