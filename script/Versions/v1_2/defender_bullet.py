@@ -1,19 +1,19 @@
-# file name: bullet.py
-###################################################################
+# file name: defender_bullet.py
+#####################################################################
 # This file defines the Bullet class used for the player's shots.
 # A bullet travels straight upwards until it either hits something
 # or goes off the top of the screen.
-###################################################################
+#####################################################################
 
 import pygame
 from settings import WHITE, BULLET_SPEED
 
 
-class Bullet(pygame.sprite.Sprite):
-    ###################################################################
+class DefenderBullet(pygame.sprite.Sprite):
+    ##################################################################
     # A bullet fired by the player. It is represented by a small white
     # rectangle and moves upwards each frame.
-    ###################################################################
+    ##################################################################
 
     def __init__(self, x, y):
         super().__init__()

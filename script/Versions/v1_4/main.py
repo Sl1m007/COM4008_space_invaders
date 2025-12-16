@@ -26,6 +26,7 @@ import random
 import sys
 from pathlib import Path
 from defender_bullet import DefenderBullet
+from invader_bullet import InvaderBullet    
 
 
 pygame.init()
@@ -181,6 +182,7 @@ all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.GroupSingle()
 invader_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
+invader_bullet_group = pygame.sprite.Group()
 barrier_group = pygame.sprite.Group()
 
 # Create player
@@ -217,7 +219,7 @@ while running:
 
     keys = pygame.key.get_pressed()
 
-    # ---------------- GAME LOGIC -----------------
+       # ---------------- GAME LOGIC -----------------
     if not game_over:
 
         # Player movement
@@ -244,15 +246,32 @@ while running:
             increase = (30 - len(invader_group)) // 10
             invader_speed = (INVADER_SPEED_START + increase) * (1 if invader_speed > 0 else -1)
 
+        # Random invader shooting (sporadic)
+        if random.randint(1, 30) == 1 and len(invader_group) > 0:
+            shooter = random.choice(invader_group.sprites())
+            bullet = InvaderBullet(shooter.rect.centerx, shooter.rect.bottom)
+            invader_bullet_group.add(bullet)
+            all_sprites.add(bullet)
+
         # Update bullets
         bullet_group.update()
+        invader_bullet_group.update()
 
-        # Bullet hits invader (Req 2)
+        # Player bullets hit invader
         hits = pygame.sprite.groupcollide(invader_group, bullet_group, True, True)
         score += len(hits)
 
-        # Bullet hits barrier (Req 3 – crumbling)
+        # Player bullets hit barriers
         pygame.sprite.groupcollide(barrier_group, bullet_group, True, True)
+
+        # Invader bullets hit barriers
+        pygame.sprite.groupcollide(barrier_group, invader_bullet_group, True, True)
+
+        # Invader bullets hit defender (lose life)
+        if pygame.sprite.spritecollide(player, invader_bullet_group, True):
+            player.lives -= 1
+            if player.lives <= 0:
+                game_over = True
 
         # GAME OVER if invaders reach too low
         for inv in invader_group:
@@ -261,13 +280,11 @@ while running:
 
     # ---------------- DRAWING -----------------
     screen.fill(BLACK)
-
     all_sprites.draw(screen)
 
     # HUD
     lives_text = font.render(f"Lives: {player.lives}", True, WHITE)
     score_text = font.render(f"Score: {score}", True, WHITE)
-
     screen.blit(lives_text, (10, 10))
     screen.blit(score_text, (SCREEN_WIDTH - 150, 10))
 
@@ -276,6 +293,24 @@ while running:
         screen.blit(over_text, (SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2))
 
     pygame.display.flip()
+
+    # ---------------- DRAWING -----------------
+screen.fill(BLACK)
+
+all_sprites.draw(screen)
+
+    # HUD
+lives_text = font.render(f"Lives: {player.lives}", True, WHITE)
+score_text = font.render(f"Score: {score}", True, WHITE)
+
+screen.blit(lives_text, (10, 10))
+screen.blit(score_text, (SCREEN_WIDTH - 150, 10))
+
+if game_over:
+        over_text = font.render("GAME OVER", True, WHITE)
+        screen.blit(over_text, (SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2))
+
+pygame.display.flip()
 
 pygame.quit()
 sys.exit()

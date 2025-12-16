@@ -1,97 +1,92 @@
-COM4008 – Space Invaders Coursework  
-Author: Terry Catchpole  
-
-This project contains my Space Invaders style game for COM4008 Programming Concepts.  
-The game is written in Python using PyGame and includes invaders, barriers, player shooting, collisions, and a basic game-over state.
-
-------------------------------------------------------------
-
 HOW TO RUN THE GAME
 
 The code for the game is stored inside the “script” folder.
+	1.	Make sure Python 3 is installed on your computer.
+	2.	Install PyGame by opening a terminal or command prompt and typing:
+pip install pygame
+	3.	Open a terminal and change into the script folder where main.py is located.
+For example:
+cd path\to\space_invaders\script
+	4.	Run the game using:
+python main.py
 
-1. Make sure Python 3 is installed.
-2. Install PyGame by opening a terminal or command prompt and typing:
+The game starts immediately and can be played straight away.
 
-   pip install pygame
-
-3. Open a terminal and change into the script folder where main.py is located.  
-   For example:
-
-   cd path\to\space_invaders\script
-
-4. Run the game with:
-
-   python main.py
-
-The game starts immediately, and you can move and shoot straight away.
-
-------------------------------------------------------------
+⸻
 
 CONTROLS
 
-Left Arrow  – Move left  
-Right Arrow – Move right  
-Space Bar   – Shoot bullets upwards  
+Left Arrow  – Move left
+Right Arrow – Move right
+Space Bar   – Shoot bullets
 
-------------------------------------------------------------
+⸻
 
 REQUIREMENT 1 – INVADER ARRAY
 
-The invaders are arranged in rows using the “create_invader_array” function in invader.py.  
-The invaders move left and right across the screen.  
-When any invader reaches the edge, they drop down and reverse direction.  
-The speed increases automatically as invaders are destroyed.
+The invaders are created in rows and placed evenly across the screen.
 
-------------------------------------------------------------
+They move left and right together as a group.
+When any invader reaches the edge of the screen, the whole group moves down and changes direction.
+As invaders are destroyed, their movement speed increases automatically.
+
+This behaviour is handled using simple movement logic and position checks in the main game loop.
+
+⸻
 
 REQUIREMENT 2 – PLAYER, SHOOTING, COLLISIONS AND LIVES
 
-The Player class (in player.py) handles movement and keeps the player inside the screen.  
-Pressing the space bar fires bullets using the Bullet class in bullet.py.
+The player is controlled using the left and right arrow keys and is kept within the screen boundaries.
 
-Bullets destroy invaders on collision, and the score increases.  
-Invader bullets can hit the player, reducing lives.  
-When all lives are lost, the game ends with a “GAME OVER” message.
+Pressing the space bar fires bullets upwards using the DefenderBullet class.
+Invaders also fire bullets using the InvaderBullet class.
 
-------------------------------------------------------------
+When a player bullet collides with an invader, the invader is removed and the score increases.
+If an invader bullet hits the player, one life is lost.
+
+The player starts with a limited number of lives.
+When all lives are lost, the game ends and a “GAME OVER” message is displayed.
+
+⸻
 
 REQUIREMENT 3 – BARRIERS THAT BREAK APART
 
-The barriers are made from small square blocks.  
-Each block can be destroyed individually by any bullet.
+The barriers are built from many small square blocks.
 
-The barrier code is in barrier.py.  
-Collisions between bullets and barriers are detected in main.py, removing the piece that was hit.
+Each barrier is created using a small 2D pattern.
+Every block is its own sprite.
 
-------------------------------------------------------------
+When a bullet hits a barrier, only the block that was hit is removed.
+This causes the barriers to slowly crumble as the game continues.
+
+⸻
 
 GAME START AND END CONDITIONS
 
-The game begins immediately when “python main.py” is run from inside the script folder.
+The game starts as soon as main.py is run.
 
 The game ends when:
-- The player loses all of their lives, or
-- The invaders move too far down the screen.
+	•	The player loses all of their lives, or
+	•	The invaders move too far down the screen
 
-A simple “GAME OVER” message is displayed.
+When the game ends, a simple “GAME OVER” message is shown.
 
-------------------------------------------------------------
+⸻
 
 TESTING
 
-I tested the game by trying different player actions:
+I tested the game by playing it and trying different actions, including:
+	•	Moving left and right to confirm the screen boundaries work
+	•	Shooting invaders to check collisions and scoring
+	•	Shooting the barriers to confirm individual blocks are removed
+	•	Letting invader bullets hit the player to test lives
+	•	Allowing invaders to reach the bottom to check the game-over condition
 
-- Moving left and right to confirm the boundaries work  
-- Shooting invaders to confirm bullets behave correctly  
-- Shooting the barriers to check they crumble  
-- Letting invader bullets hit the player to test lives  
-- Allowing the invaders to reach the bottom to check the game-over condition  
-
-------------------------------------------------------------
+⸻
 
 USE OF RESOURCES
 
-I mainly followed the COM4008 PyGame lecture material for the game loop and sprite usage.  
-I also used ChatGPT as a learning tool for understanding how to organise my code into separate files and troubleshoot issues.  
-All final code was written by me, and I made sure I understood how everything works.
+I mainly followed the COM4008 PyGame lecture material, especially for the game loop, sprites, and collision handling.
+
+I also used ChatGPT as a learning tool to help understand how to organise the project into separate files and to troubleshoot errors while learning.
+All final code was written by me, and I made sure I understood how each part of the program works.

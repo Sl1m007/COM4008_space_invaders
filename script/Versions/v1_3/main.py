@@ -1,55 +1,57 @@
-"""
-COM4008 - Programming Concepts
-Coursework 1 - Space Invaders (All 3 Requirements Completed)
-
-This script implements:
-1. Invader Array (3 sprite types, movement left/right, dropping down, speeding up)
-2. Player Shooting (multiple bullets, collisions, lives)
-3. Barriers (crumble when hit) + Invader bullets
-
-Folder Structure:
-space_invaders/
-  images/
-    objects/
-      defender.png
-      invader1.png
-      invader2.png
-      invader3.png
-  script/
-    main.py
-    invader_bullet.py
-
-Author: Terry Catchpole
-"""
+################################################################
+# COM4008 – Programming Concepts
+# Coursework 1 – Space Invaders (All 3 Requirements Completed)
+#
+# This main.py script implements:
+# 1. Invader Array (3 sprite types, movement left/right, dropping down, speeding up)
+# 2. Player Shooting (multiple bullets, collisions, lives)
+# 3. Barriers (crumble when hit)
+#
+# Folder Structure:
+# space_invaders/
+#  images/
+#    objects/
+#      defender.png
+#      invader1.png
+#      invader2.png
+#      invader3.png
+#  script/
+#    main.py
+#
+# Author: Terry Catchpole
+########################################################################################
 
 import pygame
 import random
 import sys
 from pathlib import Path
-from invader_bullet import InvaderBullet
+from defender_bullet import DefenderBullet
+from invader_bullet import InvaderBullet    
+
 
 pygame.init()
 
-# ---------------------------- SCREEN -------------------------------------
+####################################### Screen Size ###################################
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("COM4008 Space Invaders – Terry (CW1)")
+pygame.display.set_caption("COM4008 Space Invaders - Terry (CW1)")
 
 clock = pygame.time.Clock()
 FPS = 60
 
-# ----------------------------- PATHS --------------------------------------
-BASE_DIR = Path(__file__).resolve().parent          # .../script
-IMG_DIR = BASE_DIR.parent / "images" / "objects"    # .../images/objects
+############################### PATHS #######################################
+BASE_DIR = Path(__file__).resolve().parent              # .../script
+IMG_DIR = BASE_DIR.parent / "images" / "objects"        # .../images/objects
 
-# ----------------------------- CONSTANTS ----------------------------------
+############################### CONSTANTS ##################################
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 
 PLAYER_SPEED = 5
-BULLET_SPEED = -7            # Player bullets travel upwards
+BULLET_SPEED = -7
+
 INVADER_SPEED_START = 1
 INVADER_DROP = 20
 
@@ -60,7 +62,7 @@ font = pygame.font.Font(None, 36)
 #  PLAYER CLASS
 # ======================================================================
 class Player(pygame.sprite.Sprite):
-    """The defender that moves left/right and shoots bullets."""
+    # The defender that moves left/right and shoots bullets.
     def __init__(self, x, y):
         super().__init__()
         img = pygame.image.load(str(IMG_DIR / "defender.png")).convert_alpha()
@@ -82,15 +84,14 @@ class Player(pygame.sprite.Sprite):
             self.rect.right = SCREEN_WIDTH
 
     def shoot(self, bullet_group, all_sprites):
-        """Create a bullet above the player."""
-        bullet = Bullet(self.rect.centerx, self.rect.top, BULLET_SPEED)
+        # Create a bullet above the player."""
+        bullet = DefenderBullet(self.rect.centerx, self.rect.top)
         bullet_group.add(bullet)
         all_sprites.add(bullet)
 
-
-# ======================================================================
-#  BULLET CLASS (PLAYER)
-# ======================================================================
+#======================================================================
+#  BULLET CLASS
+#======================================================================
 class Bullet(pygame.sprite.Sprite):
     """A bullet fired by the player."""
     def __init__(self, x, y, speed_y):
@@ -107,9 +108,9 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-# ======================================================================
+#======================================================================
 #  INVADER CLASS
-# ======================================================================
+#======================================================================
 class Invader(pygame.sprite.Sprite):
     """Single invader inside the array."""
     def __init__(self, x, y, img_path):
@@ -134,9 +135,9 @@ class BarrierBlock(pygame.sprite.Sprite):
 # ======================================================================
 #  HELPER FUNCTIONS – CREATE INVADERS & BARRIERS
 # ======================================================================
-def create_invader_array(invaders, all_sprites, rows=3, cols=10,
-                         x_margin=100, y_margin=60, gap=10):
-    """Create rows of invaders using 3 sprite types."""
+
+def create_invader_array(invaders, all_sprites, rows=3, cols=10, x_margin=100, y_margin=60, gap=10):
+    """Create 3 rows of invaders using 3 sprite types."""
     images = ["invader1.png", "invader2.png", "invader3.png"]
 
     for row in range(rows):
@@ -176,11 +177,12 @@ def create_barriers(barrier_group, all_sprites):
 # ======================================================================
 #  GAME SETUP
 # ======================================================================
+
 all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.GroupSingle()
 invader_group = pygame.sprite.Group()
-bullet_group = pygame.sprite.Group()           # Player bullets
-invader_bullet_group = pygame.sprite.Group()   # Invader bullets
+bullet_group = pygame.sprite.Group()
+invader_bullet_group = pygame.sprite.Group()
 barrier_group = pygame.sprite.Group()
 
 # Create player
@@ -220,6 +222,9 @@ while running:
     # ---------------- GAME LOGIC -----------------
     if not game_over:
 
+        if pygame.sprite.groupcollide(invader_group, barrier_group, False, False):
+            game_over = True
+
         # Player movement
         player.update(keys)
 
@@ -239,44 +244,33 @@ while running:
             for inv in invader_group:
                 inv.rect.y += INVADER_DROP  # Drop down
 
-        # Speed up as invaders die (fewer invaders → faster)
+        # Speed up as invaders die
         if len(invader_group) > 0:
             increase = (30 - len(invader_group)) // 10
             invader_speed = (INVADER_SPEED_START + increase) * (1 if invader_speed > 0 else -1)
 
-        # ---------------- INVADER SHOOTING -----------------
-        if invader_group:
-            # Small random chance each frame that one invader will fire
-            if random.random() < 0.02:  # tweak difficulty here
-                shooter = random.choice(invader_group.sprites())
-                bullet = InvaderBullet(shooter.rect.centerx, shooter.rect.bottom)
-                invader_bullet_group.add(bullet)
-                all_sprites.add(bullet)
-
         # Update bullets
-        bullet_group.update()             # player bullets
-        invader_bullet_group.update()     # invader bullets
+        bullet_group.update()
+        invader_bullet_group.update()
 
         # Bullet hits invader (Req 2)
         hits = pygame.sprite.groupcollide(invader_group, bullet_group, True, True)
         score += len(hits)
 
-        # Player bullets hit barrier (Req 3 – crumbling)
+        # Bullet hits barrier (Req 3 – crumbling)
         pygame.sprite.groupcollide(barrier_group, bullet_group, True, True)
-
-        # Invader bullets hit barriers (also crumble)
-        pygame.sprite.groupcollide(barrier_group, invader_bullet_group, True, True)
-
-        # Invader bullets hit player
-        if pygame.sprite.spritecollide(player, invader_bullet_group, True):
-            player.lives -= 1
-            if player.lives <= 0:
-                game_over = True
 
         # GAME OVER if invaders reach too low
         for inv in invader_group:
             if inv.rect.bottom >= SCREEN_HEIGHT - 100:
                 game_over = True
+
+# Random invader shooting (sporadic)
+    if random.randint(1, 30) == 1 and len(invader_group) > 0:
+        shooter = random.choice(invader_group.sprites())
+        bullet = InvaderBullet(shooter.rect.centerx, shooter.rect.bottom)
+        invader_bullet_group.add(bullet)
+        all_sprites.add(bullet)
 
     # ---------------- DRAWING -----------------
     screen.fill(BLACK)
@@ -292,9 +286,7 @@ while running:
 
     if game_over:
         over_text = font.render("GAME OVER", True, WHITE)
-        screen.blit(over_text,
-                    (SCREEN_WIDTH // 2 - over_text.get_width() // 2,
-                     SCREEN_HEIGHT // 2))
+        screen.blit(over_text, (SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2))
 
     pygame.display.flip()
 
